@@ -11,6 +11,12 @@ class PacMan(pygame.sprite.Sprite):
         self.image = pygame.transform.scale(self.image, (w,h))
         self.rect = self.image.get_rect()
         self.rect.center = [pos_x,pos_y]
+        self.x, self.y = pos_x, pos_y
+
+    def move_to(self, x, y):
+        self.x, self.y = x, y
+
+    
 
 def draw(window, size, rows):
     distance_between_rows = size // rows
