@@ -2,7 +2,7 @@ import pygame
 import math
 from queue import PriorityQueue
 
-WIDTH = 525
+WIDTH = 500
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 BG = pygame.image.load("maze525.png").convert()
@@ -11,7 +11,7 @@ pygame.display.set_caption("A* Path Finding Algorithm")
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 255, 0)
-YELLOW = (255, 255, 0)
+YELLOW = (255, 255, 0) 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 PURPLE = (128, 0, 128)
@@ -70,20 +70,22 @@ class Spot:
 		self.color = PURPLE
 
 	def draw(self, win):
+		#win.blit(BG,(0,0))
 		pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
 
 	def update_neighbors(self, grid):
 		self.neighbors = []
+        #down
 		if self.row < self.total_rows - 1 and not grid[self.row + 1][self.col].is_barrier(): # DOWN
 			self.neighbors.append(grid[self.row + 1][self.col])
-
+        #up
 		if self.row > 0 and not grid[self.row - 1][self.col].is_barrier(): # UP
 			self.neighbors.append(grid[self.row - 1][self.col])
-
+        #right
 		if self.col < self.total_rows - 1 and not grid[self.row][self.col + 1].is_barrier(): # RIGHT
 			self.neighbors.append(grid[self.row][self.col + 1])
-
+        #left
 		if self.col > 0 and not grid[self.row][self.col - 1].is_barrier(): # LEFT
 			self.neighbors.append(grid[self.row][self.col - 1])
 
@@ -92,6 +94,7 @@ class Spot:
 
 
 def h(p1, p2):
+    #Manhattan dist.j
 	x1, y1 = p1
 	x2, y2 = p2
 	return abs(x1 - x2) + abs(y1 - y2)
@@ -193,7 +196,7 @@ def get_clicked_pos(pos, rows, width):
 
 
 def main(win, width):
-	ROWS = 35
+	ROWS = 25
 	grid = make_grid(ROWS, width)
 
 	start = None
@@ -236,7 +239,6 @@ def main(win, width):
 					for row in grid:
 						for spot in row:
 							spot.update_neighbors(grid)
-
 					Astar(lambda: draw(win, grid, ROWS, width), grid, start, end)
 
 				if event.key == pygame.K_c:
@@ -247,3 +249,6 @@ def main(win, width):
 	pygame.quit()
 
 main(WIN, WIDTH)
+    
+                        
+
