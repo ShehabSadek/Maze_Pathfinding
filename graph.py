@@ -1,3 +1,4 @@
+from time import sleep
 import pygame
 import math
 from queue import PriorityQueue
@@ -11,7 +12,7 @@ pygame.display.set_caption("A* Path Finding Algorithm")
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 255, 0)
-YELLOW = (255, 255, 0) 
+YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 PURPLE = (128, 0, 128)
@@ -156,6 +157,36 @@ def Astar(draw, grid, start, end):
 	return False
 
 
+def dfs(draw, start, end):
+	visited=[]
+	parent = {}
+	# parent[1] = 5
+	stack=[]
+	stack.append(start)
+	while stack:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+		current=stack.pop()
+		if current==end:
+			reconstruct_path(parent, end, draw)
+			end.make_end()
+			return True
+		if current not in visited:
+			visited.append(current)
+			for neighbor in current.neighbors:
+				if neighbor not in visited:
+					print("a")
+					parent[neighbor]=current
+					stack.append(neighbor)
+					neighbor.make_open()
+
+		sleep(0.1)
+		draw()
+		if current!=start:
+			current.make_closed()
+	return False
+
 def make_grid(rows, width):
 	grid = []
 	gap = width // rows
@@ -241,6 +272,12 @@ def main(win, width):
 							spot.update_neighbors(grid)
 					Astar(lambda: draw(win, grid, ROWS, width), grid, start, end)
 
+				if event.key == pygame.K_d and start and end:
+					for row in grid:
+						for spot in row:
+							spot.update_neighbors(grid)
+					dfs(lambda: draw(win, grid, ROWS, width), start, end)
+
 				if event.key == pygame.K_c:
 					start = None
 					end = None
@@ -249,6 +286,6 @@ def main(win, width):
 	pygame.quit()
 
 main(WIN, WIDTH)
-    
-                        
+
+
 
