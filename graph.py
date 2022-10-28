@@ -1,13 +1,12 @@
 from time import sleep
 import pygame
-import math
 from queue import PriorityQueue
 
 WIDTH = 500
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 BG = pygame.image.load("maze525.png").convert()
-pygame.display.set_caption("A* Path Finding Algorithm")
+pygame.display.set_caption("Pacman Maze Solver")
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
