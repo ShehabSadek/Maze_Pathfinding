@@ -1,3 +1,4 @@
+from fileinput import close
 from time import sleep
 import pygame
 from queue import PriorityQueue
@@ -29,6 +30,7 @@ class Spot:
 		self.neighbors = []
 		self.width = width
 		self.total_rows = total_rows
+		self.prev= None
 
 	def get_pos(self):
 		return self.row, self.col
@@ -106,9 +108,47 @@ def reconstruct_path(came_from, current, draw):
 		current.make_path()
 		draw()
 
-def BFS(draw, grid, start, end):
-	visited=[]
-	queue=[]
+def BFS(draw, start, end):
+	open_set = []
+	open_set.append(start)
+	came_from=[]
+	visited = [start]
+	while open_set:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+
+		current = open_set.pop(0)
+		visited.append(current)
+
+		print(len(open_set),current.get_pos())
+		if current == end:
+			while current.prev:
+				tmp=current.prev
+				came_from.append(tmp)
+				if current.prev == start :
+					break
+				current=tmp.prev
+
+			reconstruct_path(came_from, end, draw)
+			end.make_end()
+			return True
+
+		for neighbor in current.neighbors:
+			neighbor.prev=current
+			if neighbor not in visited:
+					open_set.append(neighbor)
+					neighbor.make_open()
+			
+				
+		sleep(0.1)
+		draw()
+
+		if current != start :
+			current.make_closed()
+
+	return False
+
 
 def Astar(draw, grid, start, end):
 	count = 0
@@ -156,7 +196,7 @@ def Astar(draw, grid, start, end):
 	return False
 
 
-def dfs(draw, start, end):
+def DFS(draw, start, end):
 	visited=[]
 	parent = {}
 	# parent[1] = 5
@@ -226,7 +266,7 @@ def get_clicked_pos(pos, rows, width):
 
 
 def main(win, width):
-	ROWS = 25
+	ROWS = 20
 	grid = make_grid(ROWS, width)
 
 	start = None
@@ -269,13 +309,16 @@ def main(win, width):
 					for row in grid:
 						for spot in row:
 							spot.update_neighbors(grid)
-					Astar(lambda: draw(win, grid, ROWS, width), grid, start, end)
+					#DFS(lambda: draw(win, grid, ROWS, width), start, end)
+					#Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
+					BFS(lambda: draw(win, grid, ROWS, width), start, end)
 
 				if event.key == pygame.K_d and start and end:
 					for row in grid:
 						for spot in row:
 							spot.update_neighbors(grid)
-					dfs(lambda: draw(win, grid, ROWS, width), start, end)
+
+
 
 				if event.key == pygame.K_c:
 					start = None
