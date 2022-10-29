@@ -60,31 +60,61 @@ def main(win, width):
 					end = None
 
 			if event.type == pygame.KEYDOWN:
-				if event.key == pygame.K_SPACE and start and end:
-					for row in grid:
-						for spot in row:
-							spot.update_neighbors(grid)
-					#DFS(lambda: draw(win, grid, ROWS, width), start, end)
-					Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
-					#BFS(lambda: draw(win, grid, ROWS, width), start, end)
-					#UCS(lambda: draw(win, grid, ROWS, width), grid,start, end)
-
-					#GBFS(lambda: draw(win, grid, ROWS, width), grid, start, end)
-					WIN.blit(frame_0,start.get_pos())
-					pygame.display.update()
-
-
 				if event.key == pygame.K_d and start and end:
 					for row in grid:
 						for spot in row:
 							spot.update_neighbors(grid)
 
+					st = time.time()
+					DFS(lambda: draw(win, grid, ROWS, width), start, end)
+					et = time.time()
+					print("Time taken for DFS: ", et-st)
 
+				if event.key == pygame.K_a and start and end:
+					for row in grid:
+						for spot in row:
+							spot.update_neighbors(grid)
+
+					st = time.time()
+					Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
+					et = time.time()
+					print("Time taken for A*: ", et-st)
+
+				if event.key == pygame.K_b and start and end:
+					for row in grid:
+						for spot in row:
+							spot.update_neighbors(grid)
+
+					st = time.time()
+					BFS(lambda: draw(win, grid, ROWS, width), start, end)
+					et = time.time()
+					print("Time taken for BFS: ", et-st)
+
+				if event.key == pygame.K_u and start and end:
+					for row in grid:
+						for spot in row:
+							spot.update_neighbors(grid)
+
+					st = time.time()
+					UCS(lambda: draw(win, grid, ROWS, width), grid,start, end)
+					et = time.time()
+					print("Time taken for UCS: ", et-st)
+
+				if event.key == pygame.K_g and start and end:
+					for row in grid:
+						for spot in row:
+							spot.update_neighbors(grid)
+
+					st = time.time()
+					GBFS(lambda: draw(win, grid, ROWS, width), grid, start, end)
+					et = time.time()
+					print("Time taken for GBFS: ", et-st)
 
 				if event.key == pygame.K_c:
 					start = None
 					end = None
 					grid = make_grid(ROWS, width)
+
 
 	pygame.quit()
 
