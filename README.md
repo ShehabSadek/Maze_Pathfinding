@@ -1,4 +1,4 @@
-# Maze Pathfinding alofirthms
+# Maze Pathfinding algorithms
 
 #### Artificial Intelligence team 
 
