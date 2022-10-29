@@ -1,24 +1,41 @@
+from ast import Starred
 from sys import displayhook
 import pygame
 from spots import *
 from algorithms import *
+from sprite import *
+import time
+from termcolor import colored
 
 WIDTH = 500
 
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
-BG = pygame.image.load("maze525.png").convert()
 pygame.display.set_caption("Pacman Maze Solver")
+
 sprite_sheet_image = pygame.image.load("pacman.png").convert_alpha()    
-aniamtion_list = []
+sprite_sheet= SpriteSheet(sprite_sheet_image)
 
-def get_image(sheet, width, height):
-	image = pygame.Surface((width,height)).convert_alpha()
-	image.blit(sheet, (0,0),(0,0,25,25))
-	return image
 
-frame_0 = get_image(sprite_sheet_image,25,25)
-frame_1 = get_image(sprite_sheet_image,25,25)
-frame_2 = get_image(sprite_sheet_image,25,25)
+animation_list=[]
+aniamtion_steps=3
+for x in range(aniamtion_steps):
+	animation_list.append(sprite_sheet.get_image(x,25,25,3,BLACK))
+
+def draw_pacman(path):
+	current_time = pygame.time.get_ticks()
+	frame = 0 
+	animation_cd = 100
+	last_update = pygame.time.get_ticks()
+	while path:
+		current_pos=path.pop()
+		WIN.blit(animation_list[frame],(current_pos),special_flags=pygame.BLEND_RGBA_ADD)
+		if  current_time - last_update >= animation_cd:
+			frame += 1
+		if frame >= len(animation_list):
+			frame = 0
+		last_update= current_time
+
+		
 
 def main(win, width):
 	ROWS = 20
@@ -68,7 +85,8 @@ def main(win, width):
 					st = time.time()
 					DFS(lambda: draw(win, grid, ROWS, width), start, end)
 					et = time.time()
-					print("Time taken for DFS: ", et-st)
+					
+					print("Time taken for {}: ".format(colored('DFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_a and start and end:
 					for row in grid:
@@ -78,7 +96,7 @@ def main(win, width):
 					st = time.time()
 					Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
 					et = time.time()
-					print("Time taken for A*: ", et-st)
+					print("Time taken for {}: ".format(colored('A*', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_b and start and end:
 					for row in grid:
@@ -88,7 +106,7 @@ def main(win, width):
 					st = time.time()
 					BFS(lambda: draw(win, grid, ROWS, width), start, end)
 					et = time.time()
-					print("Time taken for BFS: ", et-st)
+					print("Time taken for {}: ".format(colored('BFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_u and start and end:
 					for row in grid:
@@ -98,7 +116,7 @@ def main(win, width):
 					st = time.time()
 					UCS(lambda: draw(win, grid, ROWS, width), grid,start, end)
 					et = time.time()
-					print("Time taken for UCS: ", et-st)
+					print("Time taken for {}: ".format(colored('UCS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_g and start and end:
 					for row in grid:
@@ -108,7 +126,7 @@ def main(win, width):
 					st = time.time()
 					GBFS(lambda: draw(win, grid, ROWS, width), grid, start, end)
 					et = time.time()
-					print("Time taken for GBFS: ", et-st)
+					print("Time taken for {}: ".format(colored('GBFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_c:
 					start = None

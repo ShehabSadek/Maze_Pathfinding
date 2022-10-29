@@ -19,7 +19,6 @@ def BFS(draw, start, end):
 
 		current = open_set.pop(0)
 		visited.add(current)
-		#print(len(open_set),current.get_pos())
 		if current == end:
 			reconstruct_path2(came_from,start, end, draw)
 			end.make_end()
@@ -28,16 +27,12 @@ def BFS(draw, start, end):
 		for neighbor in current.neighbors:
 			if neighbor not in came_from:
 				came_from[neighbor]=current
-				print(came_from[neighbor].get_pos())
 			if neighbor not in visited:
 					#print(neighbor.get_pos())
 					visited.add(neighbor)
 					open_set.append(neighbor)
 					neighbor.make_open()
-		#print("-------------")
-			
-				
-		#sleep(0.1)
+
 		draw()
 
 		if current != start :
@@ -193,7 +188,6 @@ def DFS(draw, start, end):
 			visited.append(current)
 			for neighbor in current.neighbors:
 				if neighbor not in visited:
-					print("a")
 					parent[neighbor]=current
 					stack.append(neighbor)
 					neighbor.make_open()

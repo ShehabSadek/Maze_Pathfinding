@@ -98,19 +98,22 @@ def h(p1, p2):
     #Euclidean
 	return math.sqrt(pow(abs(x1 - x2),2) + pow(abs(y1 - y2),2))
 
-
+def get_path():
+	return final_path
+	
 def reconstruct_path(came_from, current, draw):
 	while current in came_from:
 		current = came_from[current]
-		final_path.append(current)
+		final_path.append(current.get_pos())
 		current.make_path()
 		draw()
+
 def reconstruct_path2(came_from,start, current, draw):
 	while current in came_from:
 		if(current==start):
 			break
 		current = came_from[current]
-		final_path.append(current)
+		final_path.append(current.get_pos())
 		current.make_path()
 		draw()
 
