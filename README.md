@@ -34,5 +34,5 @@ i.e
 * A -> A*
 * U -> UCS
 * G -> GBFS
-*C -> Clear the grid
+* C -> Clear the grid
 5. The time taken for each algorithm will be displayed in the terminal after it finishes
