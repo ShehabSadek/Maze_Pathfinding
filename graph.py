@@ -1,6 +1,7 @@
 from fileinput import close
 from time import sleep
 import pygame
+import math
 from queue import PriorityQueue
 
 WIDTH = 500
@@ -30,7 +31,7 @@ class Spot:
 		self.neighbors = []
 		self.width = width
 		self.total_rows = total_rows
-		self.prev= None
+		self.prv= None
 
 	def get_pos(self):
 		return self.row, self.col
@@ -96,10 +97,12 @@ class Spot:
 
 
 def h(p1, p2):
-    #Manhattan dist.j
 	x1, y1 = p1
 	x2, y2 = p2
-	return abs(x1 - x2) + abs(y1 - y2)
+    #Manhattan dist
+	# return abs(x1 - x2) + abs(y1 - y2)
+    #Euclidean
+	return math.sqrt(pow(abs(x1 - x2),2) + pow(abs(y1 - y2),2))
 
 
 def reconstruct_path(came_from, current, draw):
@@ -107,38 +110,42 @@ def reconstruct_path(came_from, current, draw):
 		current = came_from[current]
 		current.make_path()
 		draw()
+def reconstruct_pathBFS(came_from,start, current, draw):
+	while current in came_from:
+		if(current==start):
+			break
+		current = came_from[current]
+		current.make_path()
+		draw()
 
 def BFS(draw, start, end):
 	open_set = []
 	open_set.append(start)
-	came_from=[]
-	visited = [start]
+	came_from={}
+	visited = {start}
 	while open_set:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
 
 		current = open_set.pop(0)
-		visited.append(current)
-
-		print(len(open_set),current.get_pos())
+		visited.add(current)
+		#print(len(open_set),current.get_pos())
 		if current == end:
-			while current.prev:
-				tmp=current.prev
-				came_from.append(tmp)
-				if current.prev == start :
-					break
-				current=tmp.prev
-
-			reconstruct_path(came_from, end, draw)
+			reconstruct_pathBFS(came_from,start, end, draw)
 			end.make_end()
 			return True
 
 		for neighbor in current.neighbors:
-			neighbor.prev=current
+			if neighbor not in came_from:
+				came_from[neighbor]=current
+				print(came_from[neighbor].get_pos())
 			if neighbor not in visited:
+					#print(neighbor.get_pos())
+					visited.add(neighbor)
 					open_set.append(neighbor)
 					neighbor.make_open()
+		#print("-------------")
 			
 				
 		sleep(0.1)
@@ -161,8 +168,7 @@ def Astar(draw, grid, start, end):
 	f_score[start] = h(start.get_pos(), end.get_pos())
 
 	open_set_hash = {start}
-
-	while not open_set.empty():
+	while open_set:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -195,6 +201,91 @@ def Astar(draw, grid, start, end):
 
 	return False
 
+def UCS(draw, grid, start, end):
+	count = 0
+	open_set = PriorityQueue()
+	open_set.put((0, count, start))
+	came_from = {}
+	g_score = {spot: float("inf") for row in grid for spot in row}
+	g_score[start] = 0
+
+
+	open_set_hash = {start}
+	while open_set:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+
+		current = open_set.get()[2]
+		open_set_hash.remove(current)
+
+		if current == end:
+			reconstruct_path(came_from, end, draw)
+			end.make_end()
+			return True
+
+		for neighbor in current.neighbors:
+			temp_g_score = g_score[current] + 1
+
+			if temp_g_score < g_score[neighbor]:
+				came_from[neighbor] = current
+				g_score[neighbor] = temp_g_score
+				if neighbor not in open_set_hash:
+					count += 1
+					open_set.put((g_score[neighbor], count, neighbor))
+					open_set_hash.add(neighbor)
+					neighbor.make_open()
+
+		draw()
+
+		if current != start:
+			current.make_closed()
+
+	return False
+
+def GBFS(draw, grid, start, end):
+	count = 0
+	open_set = PriorityQueue()
+	open_set.put((0, count, start))
+	came_from = {}
+	g_score = {spot: float("inf") for row in grid for spot in row}
+	g_score[start] = 0
+	f_score = {spot: float("inf") for row in grid for spot in row}
+	f_score[start] = h(start.get_pos(), end.get_pos())
+
+	open_set_hash = {start}
+	while open_set:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+
+		current = open_set.get()[2]
+		open_set_hash.remove(current)
+
+		if current == end:
+			reconstruct_path(came_from, end, draw)
+			end.make_end()
+			return True
+
+		for neighbor in current.neighbors:
+			temp_g_score = g_score[current] + 1
+
+			if temp_g_score < g_score[neighbor]:
+				came_from[neighbor] = current
+				g_score[neighbor] = temp_g_score
+				f_score[neighbor] = temp_g_score + h(neighbor.get_pos(), end.get_pos())
+				if neighbor not in open_set_hash:
+					count += 1
+					open_set.put((f_score[neighbor], count, neighbor))
+					open_set_hash.add(neighbor)
+					neighbor.make_open()
+
+		draw()
+
+		if current != start:
+			current.make_closed()
+
+	return False
 
 def DFS(draw, start, end):
 	visited=[]
@@ -312,6 +403,9 @@ def main(win, width):
 					#DFS(lambda: draw(win, grid, ROWS, width), start, end)
 					#Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
 					BFS(lambda: draw(win, grid, ROWS, width), start, end)
+					#UCS(lambda: draw(win, grid, ROWS, width), grid,start, end)
+
+					#GBFS(lambda: draw(win, grid, ROWS, width), grid, start, end)
 
 				if event.key == pygame.K_d and start and end:
 					for row in grid:
@@ -328,6 +422,3 @@ def main(win, width):
 	pygame.quit()
 
 main(WIN, WIDTH)
-
-
-
