@@ -37,7 +37,7 @@ def BFS(draw, start, end):
 		#print("-------------")
 			
 				
-		sleep(0.1)
+		#sleep(0.1)
 		draw()
 
 		if current != start :
@@ -137,10 +137,9 @@ def GBFS(draw, grid, start, end):
 	open_set = PriorityQueue()
 	open_set.put((0, count, start))
 	came_from = {}
-	g_score = {spot: float("inf") for row in grid for spot in row}
-	g_score[start] = 0
 	f_score = {spot: float("inf") for row in grid for spot in row}
 	f_score[start] = h(start.get_pos(), end.get_pos())
+
 
 	open_set_hash = {start}
 	while open_set:
@@ -157,12 +156,11 @@ def GBFS(draw, grid, start, end):
 			return True
 
 		for neighbor in current.neighbors:
-			temp_g_score = g_score[current] + 1
+			temp_g_score = h(neighbor.get_pos(), end.get_pos())
 
-			if temp_g_score < g_score[neighbor]:
+			if temp_g_score < f_score[neighbor]:
 				came_from[neighbor] = current
-				g_score[neighbor] = temp_g_score
-				f_score[neighbor] = temp_g_score + h(neighbor.get_pos(), end.get_pos())
+				f_score[neighbor] = temp_g_score
 				if neighbor not in open_set_hash:
 					count += 1
 					open_set.put((f_score[neighbor], count, neighbor))
@@ -200,7 +198,7 @@ def DFS(draw, start, end):
 					stack.append(neighbor)
 					neighbor.make_open()
 
-		sleep(0.1)
+		#sleep(0.1)
 		draw()
 		if current!=start:
 			current.make_closed()
