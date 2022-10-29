@@ -37,7 +37,7 @@ def BFS(draw, start, end):
 		#print("-------------")
 			
 				
-		sleep(0.1)
+		#sleep(0.1)
 		draw()
 
 		if current != start :
@@ -198,7 +198,7 @@ def DFS(draw, start, end):
 					stack.append(neighbor)
 					neighbor.make_open()
 
-		sleep(0.1)
+		#sleep(0.1)
 		draw()
 		if current!=start:
 			current.make_closed()
