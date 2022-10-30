@@ -181,7 +181,7 @@ def DFS(draw, start, end):
 				pygame.quit()
 		current=stack.pop()
 		if current==end:
-			reconstruct_path2(came_from,start, end, draw)
+			reconstruct_path2(parent,start, end, draw)
 			end.make_end()
 			return True
 		if current not in visited:
