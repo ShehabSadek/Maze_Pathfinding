@@ -61,7 +61,7 @@ def Astar(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path(came_from, end, draw)
+			reconstruct_path2(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -104,7 +104,7 @@ def UCS(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path(came_from, end, draw)
+			reconstruct_path2(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -146,7 +146,7 @@ def GBFS(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path(came_from, end, draw)
+			reconstruct_path2(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -181,7 +181,7 @@ def DFS(draw, start, end):
 				pygame.quit()
 		current=stack.pop()
 		if current==end:
-			reconstruct_path(parent, end, draw)
+			reconstruct_path2(came_from,start, end, draw)
 			end.make_end()
 			return True
 		if current not in visited:

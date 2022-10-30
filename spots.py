@@ -44,6 +44,9 @@ class Spot:
 
 	def is_end(self):
 		return self.color == TURQUOISE
+	
+	def is_path(self):
+		return self.color == PURPLE
 
 	def reset(self):
 		self.color = WHITE
@@ -114,7 +117,8 @@ def reconstruct_path2(came_from,start, current, draw):
 			break
 		current = came_from[current]
 		final_path.append(current.get_pos())
-		current.make_path()
+		if current != start:
+			current.make_path()
 		draw()
 
 

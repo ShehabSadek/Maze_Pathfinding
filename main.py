@@ -8,8 +8,9 @@ import time
 from termcolor import colored
 
 WIDTH = 500
-
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
+ICON = pygame.image.load('icon.png')
+pygame.display.set_icon(ICON)
 pygame.display.set_caption("Pacman Maze Solver")
 
 sprite_sheet_image = pygame.image.load("pacman.png").convert_alpha()    
@@ -132,6 +133,15 @@ def main(win, width):
 					start = None
 					end = None
 					grid = make_grid(ROWS, width)
+				if event.key == pygame.K_r and start and end:
+					for row in grid:
+						for spot in row:
+							if spot.is_open() or spot.is_closed() or spot.is_path():
+								spot.reset()
+					print(colored('Reset path', 'red'))
+
+
+
 
 
 	pygame.quit()

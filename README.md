@@ -34,5 +34,6 @@ i.e
 * A -> A*
 * U -> UCS
 * G -> GBFS
+* R -> Reset the grid while keeping start, end and walls
 * C -> Clear the grid
 5. The time taken for each algorithm will be displayed in the terminal after it finishes
