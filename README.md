@@ -27,12 +27,16 @@ pip install termcolor
 2. Every click after setting start and end will create a wall
 3. Right click to clear the node spot
 4. To choose the algorithm simply press it's respective intial letter on the keyboard
-i.e
-* B -> BFS
-* D -> DFS
-* A -> A*
-* U -> UCS
-* G -> GBFS
-* R -> Reset the grid while keeping start, end and walls
-* C -> Clear the grid
+<p>
+  
+ i.e
+* B &rarr; BFS
+* D &rarr; DFS
+* A &rarr; A*
+* U &rarr; UCS
+* G &rarr; GBFS
+* R &rarr; Reset the grid while keeping start, end and walls
+* C &rarr; Clear the grid
+  
+ </p>
 5. The time taken for each algorithm will be displayed in the terminal after it finishes
