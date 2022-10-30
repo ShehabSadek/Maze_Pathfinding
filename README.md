@@ -1,9 +1,8 @@
 # Maze Pathfinding algorithms
 
-#### Artificial Intelligence team 
+#### Artificial Intelligence team project
 
-* Amr Abdelaziz Elsayed Abdelaziz 2020/00225
-* Shehab Eldeen Mohamed Sadek 2020/11310
+Implementing path finding algotirthms visualization on a grid using "pygame" library
 
 #### Requirments
 
