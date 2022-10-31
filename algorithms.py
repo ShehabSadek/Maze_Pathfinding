@@ -20,7 +20,7 @@ def BFS(draw, start, end):
 		current = open_set.pop(0)
 		visited.add(current)
 		if current == end:
-			reconstruct_path2(came_from,start, end, draw)
+			reconstruct_path(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -28,7 +28,6 @@ def BFS(draw, start, end):
 			if neighbor not in came_from:
 				came_from[neighbor]=current
 			if neighbor not in visited:
-					#print(neighbor.get_pos())
 					visited.add(neighbor)
 					open_set.append(neighbor)
 					neighbor.make_open()
@@ -61,7 +60,7 @@ def Astar(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path2(came_from,start, end, draw)
+			reconstruct_path(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -104,7 +103,7 @@ def UCS(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path2(came_from,start, end, draw)
+			reconstruct_path(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -146,7 +145,7 @@ def GBFS(draw, grid, start, end):
 		open_set_hash.remove(current)
 
 		if current == end:
-			reconstruct_path2(came_from,start, end, draw)
+			reconstruct_path(came_from,start, end, draw)
 			end.make_end()
 			return True
 
@@ -172,7 +171,6 @@ def GBFS(draw, grid, start, end):
 def DFS(draw, start, end):
 	visited=[]
 	parent = {}
-	# parent[1] = 5
 	stack=[]
 	stack.append(start)
 	while stack:
@@ -181,7 +179,7 @@ def DFS(draw, start, end):
 				pygame.quit()
 		current=stack.pop()
 		if current==end:
-			reconstruct_path2(parent,start, end, draw)
+			reconstruct_path(parent,start, end, draw)
 			end.make_end()
 			return True
 		if current not in visited:
@@ -192,7 +190,6 @@ def DFS(draw, start, end):
 					stack.append(neighbor)
 					neighbor.make_open()
 
-		#sleep(0.1)
 		draw()
 		if current!=start:
 			current.make_closed()
