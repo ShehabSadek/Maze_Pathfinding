@@ -1,4 +1,5 @@
 from ast import Starred
+from asyncore import write
 from sys import displayhook
 import pygame
 from spots import *
@@ -6,10 +7,12 @@ from algorithms import *
 from sprite import *
 import time
 from termcolor import colored
+import pickle
 
 WIDTH = 500
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 ICON = pygame.image.load('icon.png')
+maze=[]
 pygame.display.set_icon(ICON)
 pygame.display.set_caption("Pacman Maze Solver")
 
@@ -35,6 +38,35 @@ def draw_pacman(path):
 		if frame >= len(animation_list):
 			frame = 0
 		last_update= current_time
+
+def write_preset(maze,number):
+	try:
+		with open('maze{}.pckl'.format(number), 'wb') as fp:
+			pickle.dump(maze,fp)
+
+		print(colored('Wrote preset to file','cyan'))
+	except Exception as e:
+		print("Oops!", e.__class__, "occurred.")
+
+def load_preset_maze(grid,number):
+	try:
+		with open('maze{}.pckl'.format(number), 'rb') as fp:
+			maze=pickle.load(fp)
+		for i in range (len(maze)):
+			x,y = maze[i]
+			spot = grid[x][y]
+			spot.make_barrier()
+	except Exception as e:
+		print("Oops!", e.__class__, "occurred.")
+
+def reset(grid):
+
+	for row in grid:
+		for spot in row:
+			spot.reset()
+
+
+
 
 		
 
@@ -133,15 +165,49 @@ def main(win, width):
 					start = None
 					end = None
 					grid = make_grid(ROWS, width)
+
 				if event.key == pygame.K_r and start and end:
 					for row in grid:
 						for spot in row:
 							if spot.is_open() or spot.is_closed() or spot.is_path():
 								spot.reset()
 					print(colored('Reset path', 'red'))
-
-
-
+				if event.key == pygame.K_4 :
+					for row in grid:
+						for spot in row:
+							if(spot.is_barrier()):
+								maze.append(spot.get_pos())
+					write_preset(maze,0)
+				if event.key == pygame.K_5 :
+					for row in grid:
+						for spot in row:
+							if(spot.is_barrier()):
+								maze.append(spot.get_pos())
+					write_preset(maze,1)
+				if event.key == pygame.K_6 :
+					for row in grid:
+						for spot in row:
+							if(spot.is_barrier()):
+								maze.append(spot.get_pos())
+					write_preset(maze,2)
+				if event.key == pygame.K_1 :
+					start = None
+					end = None
+					reset(grid)
+					print(colored('Loaded preset', 'green'))
+					load_preset_maze(grid,0)
+				if event.key == pygame.K_2 :
+					start = None
+					end = None
+					reset(grid)
+					print(colored('Loaded preset', 'green'))
+					load_preset_maze(grid,1)
+				if event.key == pygame.K_3 :
+					start = None
+					end = None
+					reset(grid)
+					print(colored('Loaded preset', 'green'))
+					load_preset_maze(grid,2)			
 
 
 	pygame.quit()
