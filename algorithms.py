@@ -51,7 +51,7 @@ def Astar(draw, grid, start, end):
 	f_score[start] = h(start.get_pos(), end.get_pos())
 
 	open_set_hash = {start}
-	while open_set:
+	while open_set.qsize()>0:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -66,7 +66,7 @@ def Astar(draw, grid, start, end):
 
 		for neighbor in current.neighbors:
 			temp_g_score = g_score[current] + 1
-
+			
 			if temp_g_score < g_score[neighbor]:
 				came_from[neighbor] = current
 				g_score[neighbor] = temp_g_score
@@ -94,7 +94,7 @@ def UCS(draw, grid, start, end):
 
 
 	open_set_hash = {start}
-	while open_set:
+	while open_set.qsize()>0:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
@@ -136,7 +136,7 @@ def GBFS(draw, grid, start, end):
 
 
 	open_set_hash = {start}
-	while open_set:
+	while open_set.qsize()>0:
 		for event in pygame.event.get():
 			if event.type == pygame.QUIT:
 				pygame.quit()
