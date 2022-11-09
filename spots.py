@@ -70,7 +70,6 @@ class Spot:
 		self.color = PURPLE
 
 	def draw(self, win):
-		#win.blit(BG,(0,0))
 		pygame.draw.rect(win, self.color, (self.x, self.y, self.width, self.width))
 
 
@@ -108,9 +107,11 @@ def get_path():
 def reconstruct_path(came_from,start, current, draw):
 	while current in came_from:
 		if(current==start):
+			final_path.append(start.get_pos())
 			break
-		current = came_from[current]
 		final_path.append(current.get_pos())
+		current = came_from[current]
+		#final_path.append(tuple(ti/current.width for ti in current.get_pos()))
 		if current != start:
 			current.make_path()
 		draw()
@@ -151,6 +152,6 @@ def get_clicked_pos(pos, rows, width):
 
 	row = y // gap
 	col = x // gap
-	print(row,col)
+	#print(row,col)
 	return row, col
 
