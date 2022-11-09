@@ -25,10 +25,10 @@ for x in range(aniamtion_steps):
 def draw_pacman(path,grid,rows,width,start):
 	current_time = pygame.time.get_ticks()
 	frame = 0 
-	animation_cd = 100
+	animation_cd = 1
 	last_update = pygame.time.get_ticks()
 	curr_pos = start.get_pos()
-	while path:
+	while len(path)>0:
 		next_pos=path.pop()
 		nxt_pos=tuple(ti*25 for ti in next_pos)
 
@@ -47,7 +47,7 @@ def draw_pacman(path,grid,rows,width,start):
 
 		WIN.blit(flipped_surface,nxt_pos,special_flags=pygame.BLEND_RGBA_ADD)
 		pygame.display.update()
-		time.sleep(0.15)
+		time.sleep(0.1)
 
 		# if  current_time - last_update >= animation_cd:
 		# 	frame += 1

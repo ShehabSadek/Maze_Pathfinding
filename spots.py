@@ -105,6 +105,7 @@ def get_path():
 	
 
 def reconstruct_path(came_from,start, current, draw):
+	final_path.clear()
 	while current in came_from:
 		if(current==start):
 			final_path.append(start.get_pos())
