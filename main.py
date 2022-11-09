@@ -1,6 +1,3 @@
-from ast import Starred
-from asyncore import write
-from sys import displayhook
 import pygame
 from spots import *
 from algorithms import *
@@ -65,7 +62,13 @@ def reset(grid):
 		for spot in row:
 			spot.reset()
 
-
+def get_score(grid):
+	count=0
+	for row in grid:
+		for spot in row:
+			if spot.is_path():
+				count+=1
+	print("Cost:",colored(count,'yellow'))
 
 
 		
@@ -118,7 +121,7 @@ def main(win, width):
 					st = time.time()
 					DFS(lambda: draw(win, grid, ROWS, width), start, end)
 					et = time.time()
-					
+					get_score(grid)
 					print("Time taken for {}: ".format(colored('DFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_a and start and end:
@@ -129,6 +132,7 @@ def main(win, width):
 					st = time.time()
 					Astar(lambda: draw(win, grid, ROWS, width),grid, start, end)
 					et = time.time()
+					get_score(grid)
 					print("Time taken for {}: ".format(colored('A*', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_b and start and end:
@@ -139,6 +143,7 @@ def main(win, width):
 					st = time.time()
 					BFS(lambda: draw(win, grid, ROWS, width), start, end)
 					et = time.time()
+					get_score(grid)
 					print("Time taken for {}: ".format(colored('BFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_u and start and end:
@@ -149,6 +154,7 @@ def main(win, width):
 					st = time.time()
 					UCS(lambda: draw(win, grid, ROWS, width), grid,start, end)
 					et = time.time()
+					get_score(grid)
 					print("Time taken for {}: ".format(colored('UCS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_g and start and end:
@@ -159,6 +165,7 @@ def main(win, width):
 					st = time.time()
 					GBFS(lambda: draw(win, grid, ROWS, width), grid, start, end)
 					et = time.time()
+					get_score(grid)
 					print("Time taken for {}: ".format(colored('GBFS', 'green')), colored(et-st, 'blue'))
 
 				if event.key == pygame.K_c:

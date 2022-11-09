@@ -1,7 +1,4 @@
-from fileinput import close
-from time import sleep
 import pygame
-import math
 from queue import PriorityQueue
 from spots import *
 
