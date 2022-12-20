@@ -32,22 +32,20 @@ def draw_pacman(path,grid,rows,width,start):
 		next_pos=path.pop()
 		nxt_pos=tuple(ti*25 for ti in next_pos)
 
-		flipped_surface = animation_list[frame]
-
 		if next_pos[0] < curr_pos[0]:
 			flipped_surface = pygame.transform.flip(animation_list[frame], True, False)
-
-		if next_pos[1] < curr_pos[1]:
+		elif next_pos[1] < curr_pos[1]:
 			flipped_surface = pygame.transform.rotate(animation_list[frame],90)
-
-		if next_pos[1] > curr_pos[1]:
+		elif next_pos[1] > curr_pos[1]:
 			flipped_surface = pygame.transform.rotate(animation_list[frame],-90)
-			
+		else:
+			flipped_surface = animation_list[frame]
+
 		draw(WIN, grid, rows, width)
 
 		WIN.blit(flipped_surface,nxt_pos,special_flags=pygame.BLEND_RGBA_ADD)
 		pygame.display.update()
-		time.sleep(0.1)
+		time.sleep(0.09)
 
 		# if  current_time - last_update >= animation_cd:
 		# 	frame += 1
