@@ -91,6 +91,10 @@ def get_score(grid):
 				count+=1
 	print("Cost:",colored(count,'yellow'))
 
+def update_title(algo, time=0):
+	pygame.display.set_caption(f"Pacman Maze Solver : {algo} -> {round(time,3)}s")
+	if time==0:
+		pygame.display.set_caption(f"Pacman Maze Solver")
 
 		
 
@@ -151,7 +155,7 @@ def main(win, width):
 					et = time.time()
 					get_score(grid)
 					print("Time taken for {}: ".format(colored('DFS', 'green')), colored(et-st, 'blue'))
-
+					update_title("DFS",et-st)
 				if event.key == pygame.K_a and start and end:
 					for row in grid:
 						for spot in row:
@@ -162,6 +166,7 @@ def main(win, width):
 					et = time.time()
 					get_score(grid)
 					print("Time taken for {}: ".format(colored('A*', 'green')), colored(et-st, 'blue'))
+					update_title("A*",et-st)
 
 				if event.key == pygame.K_b and start and end:
 					for row in grid:
@@ -173,7 +178,7 @@ def main(win, width):
 					et = time.time()
 					get_score(grid)
 					print("Time taken for {}: ".format(colored('BFS', 'green')), colored(et-st, 'blue'))
-
+					update_title("BFS",et-st)
 				if event.key == pygame.K_u and start and end:
 					for row in grid:
 						for spot in row:
@@ -184,7 +189,7 @@ def main(win, width):
 					et = time.time()
 					get_score(grid)
 					print("Time taken for {}: ".format(colored('UCS', 'green')), colored(et-st, 'blue'))
-
+					update_title("UCS",et-st)	
 				if event.key == pygame.K_g and start and end:
 					for row in grid:
 						for spot in row:
@@ -195,14 +200,15 @@ def main(win, width):
 					et = time.time()
 					get_score(grid)
 					print("Time taken for {}: ".format(colored('GBFS', 'green')), colored(et-st, 'blue'))
-
+					update_title("GBFS",et-st)
 				if event.key == pygame.K_c:
 					first_run=True
 					start = None
 					end = None
 					grid = make_grid(ROWS, width)
-
+					update_title("")
 				if event.key == pygame.K_r and start and end:
+					update_title("")
 					first_run=True
 					for row in grid:
 						for spot in row:
@@ -210,6 +216,7 @@ def main(win, width):
 								spot.reset()
 					print(colored('Reset path', 'red'))
 				if event.key == pygame.K_4 :
+					update_title("")
 					for row in grid:
 						for spot in row:
 							if(spot.is_barrier()):
@@ -228,6 +235,7 @@ def main(win, width):
 								maze.append(spot.get_pos())
 					write_preset(maze,2)
 				if event.key == pygame.K_1 :
+					update_title("")
 					first_run=True
 					start = None
 					end = None
@@ -235,6 +243,7 @@ def main(win, width):
 					print(colored('Loaded preset', 'green'))
 					load_preset_maze(grid,0)
 				if event.key == pygame.K_2 :
+					update_title("")
 					first_run=True
 					start = None
 					end = None
@@ -242,6 +251,7 @@ def main(win, width):
 					print(colored('Loaded preset', 'green'))
 					load_preset_maze(grid,1)
 				if event.key == pygame.K_3 :
+					update_title("")
 					first_run=True
 					start = None
 					end = None
